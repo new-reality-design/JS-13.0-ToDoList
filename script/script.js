@@ -20,17 +20,10 @@ if (localStorage.length < 1) {
   toDoData = JSON.parse(localStorage.getItem('toDoData'));
 }
 
-console.log('STR 22 ', toDoData);
-
-let deleteButtons;
-
-
-
 
 
 const render = function () {
 
-  // if (toDoData !== undefined || toDoData !== null) 
   if (toDoData === undefined || toDoData === null) {
     localStorage.removeItem('toDoData');
   } else {
@@ -50,15 +43,15 @@ const render = function () {
       if (item.completed) {
         todoCompleted.append(listItem);
       } else {
-        // todoList.append(listItem);
-        todoList.prepend(listItem);
+        todoList.append(listItem);
+        // todoList.prepend(listItem);
       }
 
       const btnToDoCompleted = listItem.querySelector('.todo-complete');
       btnToDoCompleted.addEventListener('click', function () {
         item.completed = !item.completed;
         localStorage.setItem('toDoData', JSON.stringify(toDoData));
-        //localStorage.setItem - тогда при обновлении- отметки не теряются.
+        //setItem - тогда при обновлении отметки не теряются.
         render();
       });
     });
@@ -75,33 +68,30 @@ function deleteItem(e) {
   let itemIndex = e.target.parentNode.parentNode.indexOf;
 
   e.target.parentNode.parentNode.remove();
-
-  console.log(toDoData.splice(itemIndex, 1));
+  toDoData.splice(itemIndex, 1);
+  // console.log(toDoData.splice(itemIndex, 1));
 
   localStorage.removeItem('toDoData');
   localStorage.setItem('toDoData', JSON.stringify(toDoData));
 }
 
 function deleteItemOnClick() {
-
   if (toDoData.length > 0) {
 
     btnDeleteCollection = allToDoItems.getElementsByClassName('todo-remove');
-    console.log('btnDeleteCollection: ', btnDeleteCollection);
-
+    // console.log('btnDeleteCollection: ', btnDeleteCollection);
     btnDeleteArray = Array.from([...btnDeleteCollection]);
-    console.log('btnDeleteArray: ', btnDeleteArray);
+    // console.log('btnDeleteArray: ', btnDeleteArray);
 
     for (let btn of btnDeleteArray) {
       btn.addEventListener('click', event => {
-        // console.log(event.target);
-        indexOf = btnDeleteArray.indexOf(btn);
-        console.log('STR 97', indexOf);
 
+        indexOf = btnDeleteArray.indexOf(btn);
+        // console.log('STR 90', indexOf);
         deleteItem(event);
       });
     }
-    //End of IF
+
   }
 }
 
@@ -135,4 +125,4 @@ todoControl.addEventListener('submit', function (event) {
 
 render();
 
-// deleteItemOnClick();
+deleteItemOnClick();
