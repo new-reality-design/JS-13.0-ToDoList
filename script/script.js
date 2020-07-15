@@ -68,9 +68,21 @@ const render = function () {
 
 //Удаление дел
 let btnDeleteCollection;
-function deleteItemOnClick() {
+let btnDeleteArray = [];
+let indexOf;
 
-  let btnDeleteArray = [];
+function deleteItem(e) {
+  let itemIndex = e.target.parentNode.parentNode.indexOf;
+
+  e.target.parentNode.parentNode.remove();
+
+  console.log(toDoData.splice(itemIndex, 1));
+
+  localStorage.removeItem('toDoData');
+  localStorage.setItem('toDoData', JSON.stringify(toDoData));
+}
+
+function deleteItemOnClick() {
 
   if (toDoData.length > 0) {
 
@@ -82,14 +94,16 @@ function deleteItemOnClick() {
 
     for (let btn of btnDeleteArray) {
       btn.addEventListener('click', event => {
-        console.log(event.target);
+        // console.log(event.target);
+        indexOf = btnDeleteArray.indexOf(btn);
+        console.log('STR 97', indexOf);
+
+        deleteItem(event);
       });
     }
     //End of IF
   }
 }
-
-
 
 
 todoControl.addEventListener('submit', function (event) {
@@ -113,10 +127,12 @@ todoControl.addEventListener('submit', function (event) {
 
     render();
 
+    deleteItemOnClick();
+
     headerInput.value = '';
   }
 });
 
 render();
 
-deleteItemOnClick();
+// deleteItemOnClick();
