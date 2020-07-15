@@ -117,9 +117,9 @@ todoControl.addEventListener('submit', function (event) {
 
     render();
 
-    deleteItemOnClick();
-
     headerInput.value = '';
+
+    deleteItemOnClick();
   }
 });
 
