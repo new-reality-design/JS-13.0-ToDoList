@@ -29,11 +29,11 @@ const render = function () {
   if (toDoData === undefined || toDoData === null) {
     localStorage.removeItem('toDoData');
   } else {
-    //Очищаем textContent- чтобы избежать повторения данных
+    //Очищаем textContent- чтобы избежать повторения данных при Рендере.
     todoList.textContent = '';
     todoCompleted.textContent = '';
 
-    toDoData.forEach(item => {
+    toDoData.forEach((item, index) => {
       const listItem = document.createElement('li');
       listItem.classList.add('todo-item');
       listItem.innerHTML = '<span class="text-todo">' + item.value + '</span>' +
@@ -46,56 +46,25 @@ const render = function () {
         todoCompleted.append(listItem);
       } else {
         todoList.append(listItem);
-        // todoList.prepend(listItem);
       }
 
       const btnToDoCompleted = listItem.querySelector('.todo-complete');
       btnToDoCompleted.addEventListener('click', function () {
         item.completed = !item.completed;
         localStorage.setItem('toDoData', JSON.stringify(toDoData));
-        //setItem - тогда при обновлении отметки не теряются.
         render();
       });
+
+      const btnToDoDelete = listItem.querySelector('.todo-remove');
+      btnToDoDelete.addEventListener('click', function () {
+        toDoData.splice(index, 1);
+        localStorage.setItem('toDoData', JSON.stringify(toDoData));
+        render();
+      });
+
     });
   }
 };
-
-
-//Удаление дел
-let btnDeleteCollection;
-let btnDeleteArray = [];
-let indexOf;
-
-function deleteItem(e) {
-  let itemIndex = e.target.parentNode.parentNode.indexOf;
-
-  e.target.parentNode.parentNode.remove();
-  toDoData.splice(itemIndex, 1);
-  // console.log(toDoData.splice(itemIndex, 1));
-
-  localStorage.removeItem('toDoData');
-  localStorage.setItem('toDoData', JSON.stringify(toDoData));
-}
-
-function deleteItemOnClick() {
-  if (toDoData.length > 0) {
-
-    btnDeleteCollection = allToDoItems.getElementsByClassName('todo-remove');
-    // console.log('btnDeleteCollection: ', btnDeleteCollection);
-    btnDeleteArray = Array.from([...btnDeleteCollection]);
-    // console.log('btnDeleteArray: ', btnDeleteArray);
-
-    for (let btn of btnDeleteArray) {
-      btn.addEventListener('click', event => {
-
-        indexOf = btnDeleteArray.indexOf(btn);
-        // console.log('STR 90', indexOf);
-        deleteItem(event);
-      });
-    }
-
-  }
-}
 
 
 todoControl.addEventListener('submit', function (event) {
@@ -120,11 +89,8 @@ todoControl.addEventListener('submit', function (event) {
     render();
 
     headerInput.value = '';
-
-    deleteItemOnClick();
   }
 });
 
 render();
 
-deleteItemOnClick();
