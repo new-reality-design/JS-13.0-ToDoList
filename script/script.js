@@ -14,10 +14,12 @@ const todoControl = document.querySelector('.todo-control'),
 //Массив для хранения дел
 let toDoData;
 
-if (localStorage.length < 1) {
+let checkStorage = localStorage.getItem('toDoData');
+
+if (!checkStorage) {
   toDoData = [];
 } else {
-  toDoData = JSON.parse(localStorage.getItem('toDoData'));
+  toDoData = JSON.parse(checkStorage);
 }
 
 
